@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [closed]
 
+permissions:
+  contents: write  # Required to create tags
+
 jobs:
   deploy_to_test:
     name: Publish and Deploy to TEST
