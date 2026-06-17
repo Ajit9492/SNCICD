@@ -25,9 +25,9 @@ jobs:
       with:
         versionFormat: detect
       env:
-        snowUsername: ${{ secrets.SN_DEV_USERNAME }}
-        snowPassword: ${{ secrets.SN_DEV_PASSWORD }}
-        snowSourceInstance: ${{ secrets.NOW_DEV_INSTANCE }}
+        nowUsername: ${{ secrets.SN_DEV_USERNAME }}
+        nowPassword: ${{ secrets.SN_DEV_PASSWORD }}
+        nowSourceInstance: ${{ secrets.NOW_DEV_INSTANCE }}
         appSysID: ${{ secrets.APP_SYS_ID }}
           
     - name: Create Git Tag
@@ -54,8 +54,8 @@ jobs:
       with:
         version: ${{ steps.publish_app.outputs.newVersion }}
       env:
-        snowUsername: ${{ secrets.SN_TEST_USERNAME }}
-        snowPassword: ${{ secrets.SN_TEST_PASSWORD }}
-        snowInstallInstance: ${{ secrets.NOW_TEST_INSTANCE }}
+        nowUsername: ${{ secrets.SN_TEST_USERNAME }}
+        nowPassword: ${{ secrets.SN_TEST_PASSWORD }}
+        nowInstallInstance: ${{ secrets.NOW_TEST_INSTANCE }}
         appSysID: ${{ secrets.APP_SYS_ID }}
         appScope: ${{ secrets.APP_SCOPE }}
