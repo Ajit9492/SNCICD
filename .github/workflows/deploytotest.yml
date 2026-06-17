@@ -16,6 +16,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Fetch all history for tags
 
     - name: Publish App from DEV
       id: publish_app
@@ -30,10 +32,21 @@ jobs:
           
     - name: Create Git Tag
       if: ${{ success() && steps.publish_app.outputs.newVersion }}
-      uses: tvdias/github-tagger@v0.0.2
-      with:
-        repo-token: ${{ github.token }}
-        tag: "${{ steps.publish_app.outputs.newVersion }}"
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Delete tag if it exists locally
+        git tag -d "${{ steps.publish_app.outputs.newVersion }}" 2>/dev/null || true
+        
+        # Delete tag if it exists on remote
+        git push origin :refs/tags/${{ steps.publish_app.outputs.newVersion }} 2>/dev/null || true
+        
+        # Create new tag
+        git tag "${{ steps.publish_app.outputs.newVersion }}"
+        
+        # Push new tag to remote
+        git push origin "${{ steps.publish_app.outputs.newVersion }}"
 
     - name: Install to TEST Instance
       if: ${{ success() && steps.publish_app.outputs.newVersion }}
